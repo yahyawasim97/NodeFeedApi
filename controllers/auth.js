@@ -2,6 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt =require('jsonwebtoken');
 const {validationResult} = require('express-validator');
+
 exports.signup=(req,res,next)=>{
     const errors =validationResult(req);
     if(!errors.isEmpty()){
@@ -11,6 +12,7 @@ exports.signup=(req,res,next)=>{
         throw error;
     }
     const email = req.body.email;
+    console.log(email);
     const password = req.body.password;
     const name = req.body.name;
     bcrypt.hash(password,12)
@@ -20,6 +22,7 @@ exports.signup=(req,res,next)=>{
             password:hashedPassword,
             name
         });
+        console.log(user,'Current User');
         return user.save();
     })
     .then(result=>{
@@ -33,13 +36,13 @@ exports.signup=(req,res,next)=>{
     })
     
 }
-
 exports.login= (req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
     let loadedUser;
     User.findOne({email:email})
     .then(user=>{
+        console.log(user,'Current User');
         if(!user){
             const error = new Error('A user with this email could not be found.');
             error.statusCode=401;
