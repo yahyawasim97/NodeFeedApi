@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const jwt =require('jsonwebtoken');
 const {validationResult} = require('express-validator');
 
-//api for sign up
 exports.signup=(req,res,next)=>{
     const errors =validationResult(req);
     if(!errors.isEmpty()){
@@ -13,6 +12,7 @@ exports.signup=(req,res,next)=>{
         throw error;
     }
     const email = req.body.email;
+    console.log(email);
     const password = req.body.password;
     const name = req.body.name;
     bcrypt.hash(password,12)
@@ -36,7 +36,6 @@ exports.signup=(req,res,next)=>{
     })
     
 }
-//login for api
 exports.login= (req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
